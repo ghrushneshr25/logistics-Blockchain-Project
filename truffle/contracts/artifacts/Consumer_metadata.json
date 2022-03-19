@@ -1,0 +1,169 @@
+{
+	"compiler": {
+		"version": "0.8.7+commit.e28d00a7"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "ConsumerAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "ConsumerRemoved",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "ConsumerReported",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "ConsumerUnreported",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "addConsumer",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "isConsumer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "reportConsumer",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "unreportConsumer",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Consumer.sol": "Consumer"
+		},
+		"evmVersion": "london",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Agents.sol": {
+			"keccak256": "0x0a7d807ba019abdb571ce7edd73388813b845e38c93d2fb11ca4b4275d903019",
+			"urls": [
+				"bzz-raw://133abf0ecf674fb990a7904a01b6ce27f1b36281523d79495f680983d1da7ca4",
+				"dweb:/ipfs/Qmdgt4YBfPPsxyNaEZzsmNK4mw8kbe2SgbLkrDnn4wjnwD"
+			]
+		},
+		"contracts/Consumer.sol": {
+			"keccak256": "0xafaf9ee620f7f0f9b1001084d293fef64b25a4de59a5046d330cc1f3fd4d001b",
+			"urls": [
+				"bzz-raw://c76af974a8226a66030915fba44c120dce80c943395f47a9609cfeb51bdb2857",
+				"dweb:/ipfs/QmWfszpVtfjQw1x5DP4sy6VvU76YD33iikTD6XXJB87kiz"
+			]
+		},
+		"contracts/Owner.sol": {
+			"keccak256": "0x8a6cd7d4bb883aa1ec47209c4881f85b106a22d9800bebc3440f6da5e4141bdd",
+			"urls": [
+				"bzz-raw://966008cea1e00490dfee36098b603a5609d600c8272e4169ba8a09e35a63449b",
+				"dweb:/ipfs/QmbC4JFhUhvqkDePRvNYp6f1QxTtZ7qSEzic3sMH8eXKdu"
+			]
+		}
+	},
+	"version": 1
+}
