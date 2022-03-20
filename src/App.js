@@ -6,11 +6,12 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
-import DistributorPage from "./DistributorPage";
-import ManufacturerPage from "./ManufacturerPage";
-import OwnerPage from "./OwnerPage";
-import RetailerPage from "./RetailerPage";
 import Home from "./Home";
+import OwnerPage from "./OwnerPage";
+import ManufacturerPage from "./ManufacturerPage";
+import DistributorPage from "./DistributorPage";
+import RetailerPage from "./RetailerPage";
+import ConsumerPage from "./ConsumerPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/manufacturer" element={<ManufacturerPage />}></Route>
           <Route path="/distributor" element={<DistributorPage />}></Route>
           <Route path="/retailer" element={<RetailerPage />}></Route>
+          <Route path="/consumer" element={<ConsumerPage />}></Route>
         </Routes>
       </Router>
     </div>

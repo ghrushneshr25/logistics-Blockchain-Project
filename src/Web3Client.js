@@ -181,7 +181,7 @@ export const receiveProductByDistributor = (productId, productPrice) => {
 };
 
 export const getProductDetails = async (productId) => {
-  let productState = 0;
+  let productState = -1;
   let details = await supplyChainContract.methods
     .productDetail(productId)
     .call({ from: selectedAccount })
