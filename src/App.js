@@ -9,6 +9,7 @@ import "./App.css";
 import DistributorPage from "./DistributorPage";
 import ManufacturerPage from "./ManufacturerPage";
 import OwnerPage from "./OwnerPage";
+import RetailerPage from "./RetailerPage";
 import Home from "./Home";
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
           <Route path="/owner" element={<OwnerPage />}></Route>
           <Route path="/manufacturer" element={<ManufacturerPage />}></Route>
           <Route path="/distributor" element={<DistributorPage />}></Route>
+          <Route path="/retailer" element={<RetailerPage />}></Route>
         </Routes>
       </Router>
     </div>

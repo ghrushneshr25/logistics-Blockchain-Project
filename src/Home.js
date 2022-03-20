@@ -19,6 +19,9 @@ const Home = () => {
         <li>
           <Link to="/distributor">Distributor</Link>
         </li>
+        <li>
+          <Link to="/retailer">Retailer</Link>
+        </li>
       </ul>
     </>
   );

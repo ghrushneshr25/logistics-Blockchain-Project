@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import "./App.css";
 import OwnedProductComponent from "./OwnedProductComponent";
+import ShippedProductComponent from "./ShippedProductComponent";
 import Web3 from "web3";
 import SupplyChain from "./contractBuilds/SupplyChain.json";
 import { OWNERADDRESS, CONTRACTADDRESS } from "./constants";
@@ -57,46 +58,26 @@ export default () => {
     setShippedProducts(output);
   };
 
-  const produceByManufacturer = async (
-    productName,
-    productDesc,
-    productType,
-    collectible,
-    weight
-  ) => {
+  const receiveProductByRetailer = async (productId, productPrice) => {
     let transaction = await supplyChainContract.methods
-      .producebymanufacturer(
-        productName,
-        productDesc,
-        productType,
-        collectible,
-        weight
-      )
-      .send({ from: accountAddress })
+      .receivedbyretailer(productId)
+      .send({
+        from: accountAddress,
+        value: web3_utils.toWei(productPrice.toString()),
+      })
       .catch((error) => {
         console.log(error);
       });
 
-    console.log(transaction.events.EProducedByManufacturer.returnValues[0]);
-    fetchOwnedProducts(accountAddress);
     return transaction;
   };
 
-  const AddProductComponent = () => {
-    const [productName, setProductName] = useState("");
-    const [productDescription, setProductDescription] = useState("");
-    const [productType, setProductType] = useState("");
-    const [collectible, setCollectible] = useState("");
-    const [weight, setWeight] = useState("");
+  const ReceiveProductRetailerComponent = () => {
+    const [productId, setproductId] = useState("");
+    const [productPrice, setproductPrice] = useState("");
 
     const submitValue = async () => {
-      let output = await produceByManufacturer(
-        productName,
-        productDescription,
-        productType,
-        collectible,
-        weight
-      );
+      let output = await receiveProductByRetailer(productId, productPrice);
 
       if (output !== undefined) {
         alert("transaction successful" + JSON.stringify(output));
@@ -107,42 +88,27 @@ export default () => {
 
     return (
       <>
-        <h3>Add Product</h3>
+        <h3>Receive Product</h3>
         <input
           type="text"
-          placeholder="Product Name"
-          onChange={(e) => setProductName(e.target.value)}
+          placeholder="Product ID"
+          onChange={(e) => setproductId(e.target.value)}
         />
         <input
           type="text"
-          placeholder="Product Description"
-          onChange={(e) => setProductDescription(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Product Type"
-          onChange={(e) => setProductType(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Collectible True/False"
-          onChange={(e) => setCollectible(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="Weight"
-          onChange={(e) => setWeight(e.target.value)}
+          placeholder="Pay Price"
+          onChange={(e) => setproductPrice(e.target.value)}
         />
         <button onClick={submitValue}>Submit</button>
       </>
     );
   };
 
-  const ForSaleByManufacturerComponent = () => {
+  const ForSaleByRetailerComponent = () => {
     const [productId, setproductId] = useState("");
     const [productPrice, setproductPrice] = useState("");
     const submitValue = async () => {
-      let output = await saleByManufacturer(productId, productPrice);
+      let output = await saleByRetailer(productId, productPrice);
 
       if (output) {
         alert("Product Added for Sale");
@@ -169,10 +135,10 @@ export default () => {
     );
   };
 
-  const saleByManufacturer = async (productId, price) => {
+  const saleByRetailer = async (productId, price) => {
     let transactionStatus = false;
     await supplyChainContract.methods
-      .forsalebymanufacturer(productId, web3_utils.toWei(price.toString()))
+      .forsalebyretailer(productId, web3_utils.toWei(price.toString()))
       .send({ from: accountAddress })
       .then((transaction) => {
         transactionStatus = true;
@@ -184,10 +150,10 @@ export default () => {
     return transactionStatus;
   };
 
-  const shippedByManufacturer = async (productId, shippedToAddress) => {
+  const shippedByRetailer = async (productId, shippedToAddress) => {
     let transactionStatus = false;
     await supplyChainContract.methods
-      .shippedbymanufacturer(productId, shippedToAddress)
+      .shippedbyretailer(productId, shippedToAddress)
       .send({ from: accountAddress })
       .then((transaction) => {
         transactionStatus = true;
@@ -198,11 +164,11 @@ export default () => {
     return transactionStatus;
   };
 
-  const ShippedByManufacturerComponent = () => {
+  const ShippedByRetailerComponent = () => {
     const [productId, setproductId] = useState("");
     const [shippedToAddress, setshippedToAddress] = useState("");
     const submitValue = async () => {
-      let output = await shippedByManufacturer(productId, shippedToAddress);
+      let output = await shippedByRetailer(productId, shippedToAddress);
       if (output) {
         alert("Product Added for Sale");
       } else {
@@ -230,6 +196,7 @@ export default () => {
 
   const handleOwnedClick = () => {
     fetchOwnedProducts();
+    setShippedDisplay(false);
     setOwnedDisplay(true);
   };
   const [ownedDisplay, setOwnedDisplay] = useState(false);
@@ -237,15 +204,32 @@ export default () => {
     init();
   }, []);
 
+  const handleShippedClick = () => {
+    fetchShippedProducts();
+    setOwnedDisplay(false);
+    setShippedDisplay(true);
+  };
+  const [shippedDisplay, setShippedDisplay] = useState(false);
+
+  useEffect(() => {
+    init();
+  }, []);
+
   return (
     <>
       <p>{accountAddress}</p>
-      <AddProductComponent />
-      <ForSaleByManufacturerComponent />
-      <ShippedByManufacturerComponent />
+      <ReceiveProductRetailerComponent />
+      <ForSaleByRetailerComponent />
+      <ShippedByRetailerComponent />
       <button onClick={handleOwnedClick}>Owned Products</button>
+      <button onClick={handleShippedClick}>Shipped Products</button>
       {ownedProducts && ownedDisplay ? (
         <OwnedProductComponent owned={ownedProducts} />
+      ) : (
+        ""
+      )}
+      {shippedProducts && shippedDisplay ? (
+        <ShippedProductComponent shipped={shippedProducts} />
       ) : (
         ""
       )}
