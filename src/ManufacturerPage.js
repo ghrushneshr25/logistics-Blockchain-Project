@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import "./App.css";
-
+import OwnedProductComponent from "./Manufacturer/OwnedProductComponent";
 import Web3 from "web3";
 import SupplyChain from "./contractBuilds/SupplyChain.json";
 import { OWNERADDRESS, CONTRACTADDRESS } from "./constants";
@@ -9,7 +9,7 @@ const web3_utils = require("web3-utils");
 
 export default () => {
   const [accountAddress, setAccountAddress] = useState();
-  const [ownedProducts, setOwnedProducts] = useState([]);
+  const [ownedProducts, setOwnedProducts] = useState();
   const [shippedProducts, setShippedProducts] = useState([]);
   const [supplyChainContract, setContract] = useState();
 
@@ -47,7 +47,6 @@ export default () => {
     let output = await supplyChainContract.methods
       .getOwnedProducts(accountAddress)
       .call({ from: accountAddress, gas: 80000000 });
-    console.log(output);
     setOwnedProducts(output);
   };
 
@@ -229,6 +228,11 @@ export default () => {
     );
   };
 
+  const handleOwnedClick = () => {
+    fetchOwnedProducts();
+    setOwnedDisplay(true);
+  };
+  const [ownedDisplay, setOwnedDisplay] = useState(false);
   useEffect(() => {
     init();
   }, []);
@@ -239,8 +243,12 @@ export default () => {
       <AddProductComponent />
       <ForSaleByManufacturerComponent />
       <ShippedByManufacturerComponent />
-      <button onClick={fetchOwnedProducts}>Owned Products</button>
-      <button onClick={fetchShippedProducts}>Shipped Products</button>
+      <button onClick={handleOwnedClick}>Owned Products</button>
+      {ownedProducts && ownedDisplay ? (
+        <OwnedProductComponent owned={ownedProducts} />
+      ) : (
+        ""
+      )}
     </>
   );
 };
