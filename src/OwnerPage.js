@@ -169,32 +169,35 @@ export default () => {
       productState = details["productState"];
 
       let events = [];
-      let state = [
-        "EProducedByManufacturer",
-        "EForSaleByManufacturer",
-        "EShippedByManufacturer",
-        "EReceivedByDistributor",
-        "EForSaleByDistributor",
-        "EShippedByDistributor",
-        "EReceivedByRetailer",
-        "EForSaleByRetailer",
-        "EShippedByRetailer",
-        "EReceivedByCustomer",
-        "ECollectibleForSaleByCustomer",
-        "EShippedtheCollectibleByCustomer",
-        "EReceivedCollectibleByCustomer",
-      ];
-      let i = 0;
-      while (i <= productState) {
-        const e1 = await supplyChainContract.getPastEvents(state[i], {
-          filter: { uid: productId },
-          fromBlock: 0,
-          toBlock: "latest",
-        });
-        for (var j of e1) {
+      // let state = [
+      //   "EProducedByManufacturer",
+      //   "EForSaleByManufacturer",
+      //   "EShippedByManufacturer",
+      //   "EReceivedByDistributor",
+      //   "EForSaleByDistributor",
+      //   "EShippedByDistributor",
+      //   "EReceivedByRetailer",
+      //   "EForSaleByRetailer",
+      //   "EShippedByRetailer",
+      //   "EReceivedByCustomer",
+      //   "ECollectibleForSaleByCustomer",
+      //   "EShippedtheCollectibleByCustomer",
+      //   "EReceivedCollectibleByCustomer",
+      // ];
+      // let i = 0;
+      // while (i <= productState) {
+      const e1 = await supplyChainContract.getPastEvents("allEvents", {
+        filter: { uid: productId },
+        fromBlock: 0,
+        toBlock: "latest",
+      });
+
+      for (var j of e1) {
+        if (j.returnValues.uin == productId) {
           events.push(j);
         }
-        i++;
+        // }
+        // i++;
       }
 
       return [details, events];

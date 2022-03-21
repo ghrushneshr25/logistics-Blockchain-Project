@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import "./App.css";
 import OwnedProductComponent from "./OwnedProductComponent";
 import ShippedProductComponent from "./ShippedProductComponent";
+import ProductDetailsComponent from "./ProductDetailsComponent";
+
 import Web3 from "web3";
 import SupplyChain from "./contractBuilds/SupplyChain.json";
 import { OWNERADDRESS, CONTRACTADDRESS } from "./constants";
@@ -13,6 +15,10 @@ export default () => {
   const [ownedProducts, setOwnedProducts] = useState();
   const [shippedProducts, setShippedProducts] = useState([]);
   const [supplyChainContract, setContract] = useState();
+  const [displayDetails, setDisplayDetails] = useState(false);
+  const [productDetails, setProductDetails] = useState();
+  const [shippedDisplay, setShippedDisplay] = useState(false);
+  const [ownedDisplay, setOwnedDisplay] = useState(false);
 
   let web3;
 
@@ -194,22 +200,77 @@ export default () => {
     );
   };
 
+  const [productId, setproductId] = useState("");
+
+  const FindProductComponent = () => {
+    const getProductDetails = async (productid) => {
+      let productState = -1;
+      let details = await supplyChainContract.methods
+        .productDetail(productid)
+        .call({ from: accountAddress })
+        .catch((error) => {
+          console.log(error);
+        });
+      if (details["uin"] == 0) {
+        return undefined;
+      }
+      productState = details["productState"];
+
+      let events = [];
+
+      const e1 = await supplyChainContract.getPastEvents("allEvents", {
+        filter: { uid: productid },
+        fromBlock: 0,
+        toBlock: "latest",
+      });
+
+      for (var j of e1) {
+        if (j.returnValues.uin == productid) {
+          events.push(j);
+        }
+      }
+
+      return [details, events];
+    };
+
+    const submitValue = async () => {
+      let fetched = await getProductDetails(productId);
+      if (fetched === undefined) {
+        alert("PRODUCT NOT FOUND");
+        return;
+      }
+      setProductDetails(fetched);
+      setOwnedDisplay(false);
+      setShippedDisplay(false);
+      setDisplayDetails(true);
+    };
+
+    return (
+      <>
+        <h3>Get Product Details</h3>
+        <input
+          type="text"
+          placeholder="Product ID"
+          onChange={(e) => setproductId(e.target.value)}
+        />
+        <button onClick={submitValue}>Submit</button>
+      </>
+    );
+  };
+
   const handleOwnedClick = () => {
     fetchOwnedProducts();
     setShippedDisplay(false);
+    setDisplayDetails(false);
     setOwnedDisplay(true);
   };
-  const [ownedDisplay, setOwnedDisplay] = useState(false);
-  useEffect(() => {
-    init();
-  }, []);
 
   const handleShippedClick = () => {
     fetchShippedProducts();
     setOwnedDisplay(false);
+    setDisplayDetails(false);
     setShippedDisplay(true);
   };
-  const [shippedDisplay, setShippedDisplay] = useState(false);
 
   useEffect(() => {
     init();
@@ -221,6 +282,7 @@ export default () => {
       <ReceiveProductDistributorComponent />
       <ForSaleByDistributorComponent />
       <ShippedByDistributorComponent />
+      <FindProductComponent />
       <button onClick={handleOwnedClick}>Owned Products</button>
       <button onClick={handleShippedClick}>Shipped Products</button>
       {ownedProducts && ownedDisplay ? (
@@ -230,6 +292,11 @@ export default () => {
       )}
       {shippedProducts && shippedDisplay ? (
         <ShippedProductComponent shipped={shippedProducts} />
+      ) : (
+        ""
+      )}
+      {productDetails && displayDetails ? (
+        <ProductDetailsComponent details={productDetails} />
       ) : (
         ""
       )}
