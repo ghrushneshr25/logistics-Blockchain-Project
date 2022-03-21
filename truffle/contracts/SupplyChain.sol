@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.4.24;
 
 //contracts
@@ -94,68 +95,82 @@ contract SupplyChain is Retailer, Consumer, Manufacturer, Distributor {
 
     event EProducedByManufacturer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y
+        uint256 timeStamp,
+        address indexed caller
     );
     event EForSaleByManufacturer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        uint256 z
+        uint256 timeStamp,
+        address indexed caller,
+        uint256 price
     );
     event EShippedByManufacturer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        address indexed z
+        uint256 timeStamp,
+        address indexed caller,
+        address indexed receiver
     );
     event EReceivedByDistributor(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y
+        uint256 timeStamp,
+        address indexed caller
     );
     event EForSaleByDistributor(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        uint256 z
+        uint256 timeStamp,
+        address indexed caller,
+        uint256 price
     );
     event EShippedByDistributor(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        address indexed z
+        uint256 timeStamp,
+        address indexed caller,
+        address indexed receiver
     );
-    event EReceivedByRetailer(uint256 indexed uin, uint256 x, address y);
+    event EReceivedByRetailer(
+        uint256 indexed uin,
+        uint256 timeStamp,
+        address caller
+    );
+
     event EForSaleByRetailer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        uint256 z
+        uint256 timeStamp,
+        address indexed caller,
+        uint256 price
     );
+
     event EShippedByRetailer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        address indexed z
+        uint256 timeStamp,
+        address indexed caller,
+        address indexed receiver
     );
-    event EReceivedByCustomer(uint256 indexed uin, uint256 x, address y);
+
+    event EReceivedByCustomer(
+        uint256 indexed uin,
+        uint256 timeStamp,
+        address caller
+    );
+
     event ECollectibleForSaleByCustomer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        uint256 z
+        uint256 timeStamp,
+        address indexed caller,
+        uint256 price
     );
+
     event EShippedtheCollectibleByCustomer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y,
-        address indexed z
+        uint256 timeStamp,
+        address indexed caller,
+        address indexed receiver
     );
+
     event EReceivedCollectibleByCustomer(
         uint256 indexed uin,
-        uint256 x,
-        address indexed y
+        uint256 timeStamp,
+        address caller
     );
 
     //Is Amount Equal

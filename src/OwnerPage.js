@@ -163,7 +163,11 @@ export default () => {
         .catch((error) => {
           console.log(error);
         });
+      if (details["uin"] == 0) {
+        return undefined;
+      }
       productState = details["productState"];
+
       let events = [];
       let state = [
         "EProducedByManufacturer",
@@ -198,6 +202,10 @@ export default () => {
 
     const submitValue = async () => {
       let fetched = await getProductDetails(productId);
+      if (fetched === undefined) {
+        alert("PRODUCT NOT FOUND");
+        return;
+      }
       setProductDetails(fetched);
       setDisplayDetails(true);
     };
